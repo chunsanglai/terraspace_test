@@ -1,0 +1,32 @@
+name: Push Up
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@master
+      with:
+        role-to-assume: arn:aws:iam::989427353090:role/test-Role-1Q6Y1SX0EQQDM
+        aws-region: eu-central-1
+
+    - name: Checkout
+      uses: actions/checkout@v3
+
+    - name: Install Ruby
+      uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: 3.1
+        bundler-cache: true # runs 'bundle install' and caches installed gems automatically
+
+    - name: Install
+      run:
+        .github/bin/install
+
+    # - name: Terraspace Command
+    #   run: |
+    #     terraspace up demo -y
